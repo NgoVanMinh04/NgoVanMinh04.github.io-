@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học HSK 3 - Bài 1 (Kèm Câu Ví Dụ)</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #888888;
+            --correct: #2ecc71;
+            --wrong: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 25px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .progress {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        /* Flashcard Style */
+        .flashcard {
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flashcard:active {
+            transform: scale(0.98);
+        }
+
+        /* Màu riêng cho thẻ Từ Vựng */
+        .card-vocab {
+            background: #fff9e6;
+            border: 2px dashed #f1c40f;
+        }
+        .card-vocab:active { background: #fff4c2; }
+
+        /* Màu riêng cho thẻ Câu Ví Dụ */
+        .card-example {
+            background: #e8f4fd;
+            border: 2px dashed #3498db;
+        }
+        .card-example:active { background: #d6ebfa; }
+
+        .audio-btn {
+            font-size: 25px;
+            background: #ffffff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #eee;
+        }
+
+        .audio-btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+
+        .vietnamese-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d35400;
+            line-height: 1.4;
+        }
+        
+        .card-example .vietnamese-text {
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        .hanzi-text {
+            font-size: 24px;
+            color: #c0392b;
+            margin-top: 15px;
+            display: none;
+            font-family: "KaiTi", "SimSun", "Microsoft YaHei", sans-serif;
+            font-weight: bold;
+        }
+
+        .pinyin-text {
+            font-size: 22px;
+            color: var(--primary);
+            margin-top: 5px;
+            display: none;
+            font-style: italic;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+            margin-top: 25px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px 10px;
+            font-size: 24px;
+            font-family: "KaiTi", "SimSun", "Microsoft YaHei", sans-serif;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #2c3e50;
+            outline: none;
+        }
+
+        .option-btn:active {
+            background: #e9ecef;
+            transform: scale(0.98);
+        }
+
+        .option-btn.correct {
+            background: var(--correct) !important;
+            border-color: var(--correct) !important;
+            color: white !important;
+        }
+
+        .option-btn.wrong {
+            background: var(--wrong) !important;
+            border-color: var(--wrong) !important;
+            color: white !important;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Controls */
+        .next-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            display: none;
+            margin: 0 auto;
+            width: 80%;
+            transition: background 0.3s;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        @media (max-width: 400px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .option-btn { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>HSK 3 - Bài 1</h1>
+        <div class="progress" id="progressText">Từ 1 / 41</div>
+
+        <!-- Thẻ 1: Từ Vựng -->
+        <div class="flashcard card-vocab" onclick="toggleVocab()">
+            <div class="audio-btn" onclick="playAudio(event, 'vocab')" title="Nghe từ vựng">🔊</div>
+            <div class="vietnamese-text" id="viText">Đang tải...</div>
+            <div class="pinyin-text" id="pinyinText"></div>
+            <div class="hint">(Chạm vào nền vàng để hiện Pinyin)</div>
+        </div>
+
+        <!-- Thẻ 2: Câu Ví Dụ -->
+        <div class="flashcard card-example" onclick="toggleExample()">
+            <div class="audio-btn" onclick="playAudio(event, 'example')" title="Nghe câu ví dụ">🔊</div>
+            <div class="vietnamese-text" id="exViText">Đang tải...</div>
+            <div class="hanzi-text" id="exHanziText"></div>
+            <div class="pinyin-text" id="exPinyinText"></div>
+            <div class="hint">(Chạm vào nền xanh để hiện Chữ Hán + Pinyin)</div>
+        </div>
+
+        <p style="font-weight: bold; margin-bottom: 5px; color: #555; font-size: 15px;">Chọn chữ Hán của từ vựng ở trên:</p>
+        <div class="options-grid" id="optionsContainer">
+            <!-- Buttons sẽ được tạo tự động bằng Javascript -->
+        </div>
+
+        <button class="next-btn" id="nextBtn" onclick="nextWord()">Từ Tiếp Theo ➔</button>
+    </div>
+
+    <script>
+        // Dữ liệu 41 từ vựng HSK 3 - Bài 1 (Kèm câu ví dụ)
+        const vocabList = [
+            { hanzi: "变化", pinyin: "biànhuà", vi: "biến hóa, thay đổi (danh từ, động từ)", ex_hanzi: "这几年的变化很大。", ex_pinyin: "Zhè jǐ nián de biànhuà hěn dà.", ex_vi: "Những năm gần đây sự thay đổi rất lớn." },
+            { hanzi: "暑假", pinyin: "shǔjià", vi: "kỳ nghỉ hè", ex_hanzi: "暑假你打算去哪儿玩？", ex_pinyin: "Shǔjià nǐ dǎsuàn qù nǎr wán?", ex_vi: "Kỳ nghỉ hè bạn định đi đâu chơi?" },
+            { hanzi: "还", pinyin: "hái", vi: "vẫn, vẫn còn", ex_hanzi: "我还有一个问题。", ex_pinyin: "Wǒ hái yǒu yí ge wèntí.", ex_vi: "Tôi vẫn còn một câu hỏi." },
+            { hanzi: "比", pinyin: "bǐ", vi: "hơn, so với (so sánh)", ex_hanzi: "今天比昨天冷。", ex_pinyin: "Jīntiān bǐ zuótiān lěng.", ex_vi: "Hôm nay lạnh hơn hôm qua." },
+            { hanzi: "人口", pinyin: "rénkǒu", vi: "nhân khẩu, dân số", ex_hanzi: "这个城市的人口很多。", ex_pinyin: "Zhège chéngshì de rénkǒu hěn duō.", ex_vi: "Dân số của thành phố này rất đông." },
+            { hanzi: "最", pinyin: "zuì", vi: "nhất", ex_hanzi: "这是我最喜欢的书。", ex_pinyin: "Zhè shì wǒ zuì xǐhuan de shū.", ex_vi: "Đây là cuốn sách tôi thích nhất." },
+            { hanzi: "城市", pinyin: "chéngshì", vi: "thành phố", ex_hanzi: "我很喜欢这个城市。", ex_pinyin: "Wǒ hěn xǐhuan zhège chéngshì.", ex_vi: "Tôi rất thích thành phố này." },
+            { hanzi: "增加", pinyin: "zēngjiā", vi: "tăng thêm, tăng lên", ex_hanzi: "今年的学生增加了很多。", ex_pinyin: "Jīnnián de xuéshēng zēngjiā le hěn duō.", ex_vi: "Học sinh năm nay đã tăng lên rất nhiều." },
+            { hanzi: "建筑", pinyin: "jiànzhù", vi: "kiến trúc, xây dựng", ex_hanzi: "这里的建筑很特别。", ex_pinyin: "Zhèlǐ de jiànzhù hěn tèbié.", ex_vi: "Kiến trúc ở đây rất đặc biệt." },
+            { hanzi: "过去", pinyin: "guòqù", vi: "quá khứ", ex_hanzi: "过去的事情就让它过去吧。", ex_pinyin: "Guòqù de shìqing jiù ràng tā guòqù ba.", ex_vi: "Chuyện của quá khứ hãy để nó qua đi." },
+            { hanzi: "变", pinyin: "biàn", vi: "biến, thay đổi (động từ)", ex_hanzi: "天气变冷了。", ex_pinyin: "Tiānqì biàn lěng le.", ex_vi: "Thời tiết chuyển lạnh rồi." },
+            { hanzi: "更", pinyin: "gèng", vi: "hơn, càng", ex_hanzi: "我希望能做得更好。", ex_pinyin: "Wǒ xīwàng néng zuò de gèng hǎo.", ex_vi: "Tôi hy vọng có thể làm tốt hơn." },
+            { hanzi: "漂亮", pinyin: "piàoliang", vi: "đẹp, xinh đẹp", ex_hanzi: "你的衣服真漂亮。", ex_pinyin: "Nǐ de yīfu zhēn piàoliang.", ex_vi: "Quần áo của bạn thật đẹp." },
+            { hanzi: "冬天", pinyin: "dōngtiān", vi: "mùa đông", ex_hanzi: "这里的冬天很冷。", ex_pinyin: "Zhèlǐ de dōngtiān hěn lěng.", ex_vi: "Mùa đông ở đây rất lạnh." },
+            { hanzi: "暖和", pinyin: "nuǎnhuo", vi: "ấm áp", ex_hanzi: "春天天气很暖和。", ex_pinyin: "Chūntiān tiānqì hěn nuǎnhuo.", ex_vi: "Thời tiết mùa xuân rất ấm áp." },
+            { hanzi: "可是", pinyin: "kěshì", vi: "nhưng", ex_hanzi: "我想去，可是我没时间。", ex_pinyin: "Wǒ xiǎng qù, kěshì wǒ méi shíjiān.", ex_vi: "Tôi muốn đi, nhưng tôi không có thời gian." },
+            { hanzi: "暖气", pinyin: "nuǎnqì", vi: "hệ thống sưởi", ex_hanzi: "房间里有暖气，很舒服。", ex_pinyin: "Fángjiān lǐ yǒu nuǎnqì, hěn shūfu.", ex_vi: "Trong phòng có lò sưởi, rất thoải mái." },
+            { hanzi: "天气", pinyin: "tiānqì", vi: "thời tiết", ex_hanzi: "今天天气怎么样？", ex_pinyin: "Jīntiān tiānqì zěnmeyàng?", ex_vi: "Thời tiết hôm nay thế nào?" },
+            { hanzi: "预报", pinyin: "yùbào", vi: "dự báo, báo trước", ex_hanzi: "天气预报说明天有雨。", ex_pinyin: "Tiānqì yùbào shuō míngtiān yǒu yǔ.", ex_vi: "Dự báo thời tiết nói ngày mai có mưa." },
+            { hanzi: "气温", pinyin: "qìwēn", vi: "nhiệt độ không khí", ex_hanzi: "今天的气温很高。", ex_pinyin: "Jīntiān de qìwēn hěn gāo.", ex_vi: "Nhiệt độ hôm nay rất cao." },
+            { hanzi: "高", pinyin: "gāo", vi: "cao", ex_hanzi: "那个男人很高。", ex_pinyin: "Nàge nánrén hěn gāo.", ex_vi: "Người đàn ông đó rất cao." },
+            { hanzi: "度", pinyin: "dù", vi: "độ", ex_hanzi: "今天的气温是三十度。", ex_pinyin: "Jīntiān de qìwēn shì sānshí dù.", ex_vi: "Nhiệt độ hôm nay là 30 độ." },
+            { hanzi: "屋子", pinyin: "wūzi", vi: "phòng, ốc tử", ex_hanzi: "这间屋子很大。", ex_pinyin: "Zhè jiān wūzi hěn dà.", ex_vi: "Căn phòng này rất lớn." },
+            { hanzi: "感觉", pinyin: "gǎnjué", vi: "cảm giác", ex_hanzi: "我感觉有点儿累。", ex_pinyin: "Wǒ gǎnjué yǒudiǎnr lèi.", ex_vi: "Tôi cảm giác hơi mệt một chút." },
+            { hanzi: "家庭", pinyin: "jiātíng", vi: "gia đình", ex_hanzi: "他有一个幸福的家庭。", ex_pinyin: "Tā yǒu yí ge xìngfú de jiātíng.", ex_vi: "Anh ấy có một gia đình hạnh phúc." },
+            { hanzi: "旅馆", pinyin: "lǚguǎn", vi: "nhà nghỉ, khách sạn", ex_hanzi: "我们住在一家小旅馆里。", ex_pinyin: "Wǒmen zhù zài yì jiā xiǎo lǚguǎn lǐ.", ex_vi: "Chúng tôi ở trong một nhà nghỉ nhỏ." },
+            { hanzi: "饭店", pinyin: "fàndiàn", vi: "khách sạn, tiệm ăn", ex_hanzi: "这家饭店的菜很好吃。", ex_pinyin: "Zhè jiā fàndiàn de cài hěn hǎochī.", ex_vi: "Món ăn của tiệm ăn này rất ngon." },
+            { hanzi: "迷", pinyin: "mí", vi: "mê, lạc (đường)", ex_hanzi: "我在森林里迷路了。", ex_pinyin: "Wǒ zài sēnlín lǐ mílù le.", ex_vi: "Tôi bị lạc đường trong rừng rồi." },
+            { hanzi: "光", pinyin: "guāng", vi: "chỉ (only) / quang", ex_hanzi: "房间里只有一点儿光。", ex_pinyin: "Fángjiān lǐ zhǐyǒu yìdiǎnr guāng.", ex_vi: "Trong phòng chỉ có một chút ánh sáng." },
+            { hanzi: "也许", pinyin: "yěxǔ", vi: "có thể, có lẽ", ex_hanzi: "也许他是对的。", ex_pinyin: "Yěxǔ tā shì duì de.", ex_vi: "Có lẽ anh ấy đúng." },
+            { hanzi: "古典", pinyin: "gǔdiǎn", vi: "cổ điển", ex_hanzi: "我喜欢听古典音乐。", ex_pinyin: "Wǒ xǐhuan tīng gǔdiǎn yīnyuè.", ex_vi: "Tôi thích nghe nhạc cổ điển." },
+            { hanzi: "现代", pinyin: "xiàndài", vi: "hiện đại", ex_hanzi: "这是一个现代化的城市。", ex_pinyin: "Zhè shì yí ge xiàndàihuà de chéngshì.", ex_vi: "Đây là một thành phố hiện đại." },
+            { hanzi: "世界", pinyin: "shìjiè", vi: "thế giới", ex_hanzi: "世界上有很多国家。", ex_pinyin: "Shìjiè shang yǒu hěn duō guójiā.", ex_vi: "Trên thế giới có rất nhiều quốc gia." },
+            { hanzi: "名曲", pinyin: "míngqǔ", vi: "bài ca nổi tiếng", ex_hanzi: "这是一首世界名曲。", ex_pinyin: "Zhè shì yì shǒu shìjiè míngqǔ.", ex_vi: "Đây là một bài ca nổi tiếng thế giới." },
+            { hanzi: "民歌", pinyin: "mínggē", vi: "dân ca", ex_hanzi: "奶奶喜欢唱民歌。", ex_pinyin: "Nǎinai xǐhuan chàng mínggē.", ex_vi: "Bà nội thích hát dân ca." },
+            { hanzi: "流行", pinyin: "liúxíng", vi: "lưu hành, thịnh hành", ex_hanzi: "这种衣服现在很流行。", ex_pinyin: "Zhè zhǒng yīfu xiànzài hěn liúxíng.", ex_vi: "Loại quần áo này bây giờ rất thịnh hành." },
+            { hanzi: "歌曲", pinyin: "gēqǔ", vi: "bài hát, ca khúc", ex_hanzi: "这首歌曲很好听。", ex_pinyin: "Zhè shǒu gēqǔ hěn hǎotīng.", ex_vi: "Bài hát này rất hay." },
+            { hanzi: "年轻", pinyin: "niánqīng", vi: "trẻ, niên khinh", ex_hanzi: "年轻人喜欢新鲜事物。", ex_pinyin: "Niánqīng rén xǐhuan xīnxiān shìwù.", ex_vi: "Người trẻ tuổi thích những thứ mới mẻ." },
+            { hanzi: "歌词", pinyin: "gēcí", vi: "lời bài hát, ca từ", ex_hanzi: "这首歌的歌词很美。", ex_pinyin: "Zhè shǒu gē de gēcí hěn měi.", ex_vi: "Lời bài hát của bài này rất đẹp." },
+            { hanzi: "有些", pinyin: "yǒuxiē", vi: "một vài", ex_hanzi: "我有些累了，想休息。", ex_pinyin: "Wǒ yǒuxiē lèi le, xiǎng xiūxi.", ex_vi: "Tôi có chút mệt rồi, muốn nghỉ ngơi." },
+            { hanzi: "遥远", pinyin: "yáoyuǎn", vi: "xa xôi, xa thẳm", ex_hanzi: "那个地方非常遥远。", ex_pinyin: "Nàge dìfang fēicháng yáoyuǎn.", ex_vi: "Nơi đó vô cùng xa xôi." }
+        ];
+
+        const lessonHanzi = vocabList.map(item => item.hanzi);
+
+        // KHO TỪ VỰNG HSK 2 & 3
+        const hardDistractorsPool = [
+            "懂", "错", "对", "远", "近", "快", "慢", "贵", "穿", "洗", "找", "笑", "哭", "卖", "玩", 
+            "完", "借", "差", "拿", "换", "查", "忘", "留", "越", "像", "爬", "饱", "渴", "饿", 
+            "胖", "瘦", "矮", "绿", "蓝", "坏", "满", "响", "停", "讲", "答", "问", "算", 
+            "帮忙", "准备", "开始", "觉得", "意思", "发现", "离开", "检查", "影响", "习惯", 
+            "经过", "了解", "参加", "解决", "决定", "明白", "要求", "清楚", "突然", "奇怪", 
+            "舒服", "简单", "聪明", "可爱", "努力", "认真", "满意", "发生", "发展", "结束", 
+            "结婚", "介绍", "照顾", "锻炼", "干净", "安静", "热情", "容易", "严重", "相同"
+        ];
+
+        const validDistractors = hardDistractorsPool.filter(hanzi => !lessonHanzi.includes(hanzi));
+
+        let currentIndex = 0;
+        let isAnswered = false;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Bật/tắt Pinyin thẻ Từ Vựng
+        function toggleVocab() {
+            const pinyinEl = document.getElementById("pinyinText");
+            pinyinEl.style.display = (pinyinEl.style.display === "none" || pinyinEl.style.display === "") ? "block" : "none";
+        }
+
+        // Bật/tắt Pinyin + Chữ Hán thẻ Câu Ví Dụ
+        function toggleExample() {
+            const hanziEl = document.getElementById("exHanziText");
+            const pinyinEl = document.getElementById("exPinyinText");
+            
+            if (hanziEl.style.display === "none" || hanziEl.style.display === "") {
+                hanziEl.style.display = "block";
+                pinyinEl.style.display = "block";
+            } else {
+                hanziEl.style.display = "none";
+                pinyinEl.style.display = "none";
+            }
+        }
+
+        // Phát âm (Phân biệt loa từ vựng và loa câu ví dụ)
+        function playAudio(event, type) {
+            event.stopPropagation(); // Không kích hoạt lật thẻ
+            
+            let textToRead = "";
+            if (type === 'vocab') {
+                textToRead = vocabList[currentIndex].hanzi;
+            } else if (type === 'example') {
+                textToRead = vocabList[currentIndex].ex_hanzi;
+            }
+            
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); 
+                const utterance = new SpeechSynthesisUtterance(textToRead);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt không hỗ trợ phát âm.");
+            }
+        }
+
+        // Tải từ vựng và ví dụ
+        function loadWord() {
+            isAnswered = false;
+            document.getElementById("nextBtn").style.display = "none";
+            
+            // Ẩn pinyin/hanzi ban đầu
+            document.getElementById("pinyinText").style.display = "none";
+            document.getElementById("exHanziText").style.display = "none";
+            document.getElementById("exPinyinText").style.display = "none";
+            
+            const currentWord = vocabList[currentIndex];
+            const currentLength = currentWord.hanzi.length;
+            
+            // Nạp dữ liệu Từ vựng
+            document.getElementById("progressText").innerText = `Từ ${currentIndex + 1} / ${vocabList.length}`;
+            document.getElementById("viText").innerText = currentWord.vi;
+            document.getElementById("pinyinText").innerText = currentWord.pinyin;
+
+            // Nạp dữ liệu Câu ví dụ
+            document.getElementById("exViText").innerText = currentWord.ex_vi;
+            document.getElementById("exHanziText").innerText = currentWord.ex_hanzi;
+            document.getElementById("exPinyinText").innerText = currentWord.ex_pinyin;
+
+            // Tạo đáp án
+            let matchingLengthPool = validDistractors.filter(w => w.length === currentLength);
+            matchingLengthPool = shuffleArray(matchingLengthPool);
+
+            let options = [currentWord.hanzi];
+            for(let i = 0; i < 9; i++) {
+                if(matchingLengthPool[i]) {
+                    options.push(matchingLengthPool[i]);
+                } else {
+                    options.push(validDistractors[Math.floor(Math.random() * validDistractors.length)]);
+                }
+            }
+
+            options = shuffleArray(options);
+
+            const container = document.getElementById("optionsContainer");
+            container.innerHTML = "";
+            
+            options.forEach(option => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(btn, option, currentWord.hanzi);
+                container.appendChild(btn);
+            });
+        }
+
+        // Kiểm tra đáp án
+        function checkAnswer(btn, selectedOption, correctOption) {
+            if (isAnswered) return;
+
+            const allButtons = document.querySelectorAll(".option-btn");
+            
+            if (selectedOption === correctOption) {
+                // ĐÚNG
+                btn.classList.add("correct");
+                isAnswered = true;
+                document.getElementById("nextBtn").style.display = "block";
+                
+                // Mở sẵn kết quả
+                document.getElementById("pinyinText").style.display = "block";
+                document.getElementById("exHanziText").style.display = "block";
+                document.getElementById("exPinyinText").style.display = "block";
+                
+                allButtons.forEach(b => b.disabled = true);
+                
+                // Đọc từ vựng
+                setTimeout(() => { playAudio({ stopPropagation: () => {} }, 'vocab'); }, 300);
+            } else {
+                // SAI
+                btn.classList.add("wrong");
+                setTimeout(() => {
+                    btn.classList.remove("wrong");
+                }, 800);
+            }
+        }
+
+        // Chuyển bài
+        function nextWord() {
+            if (currentIndex < vocabList.length - 1) {
+                currentIndex++;
+                loadWord();
+            } else {
+                alert("Chúc mừng! Bạn đã hoàn thành toàn bộ 41 từ vựng của Bài 1!");
+                currentIndex = 0;
+                loadWord();
+            }
+        }
+
+        loadWord();
+
+    </script>
+</body>
+</html>
